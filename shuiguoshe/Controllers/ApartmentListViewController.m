@@ -24,12 +24,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"服务小区";
+    self.title = @"选择小区";
     
-    [self setLeftBarButtonWithImage:@"btn_close.png"
-                            command:[ForwardCommand buildCommandWithForward:
-                                     [Forward buildForwardWithType:ForwardTypeDismiss
-                                                              from:self toController:nil]]];
+    self.hasLeftButton = [self.userData boolValue];
+    
+    if ( self.hasLeftButton ) {
+        [self setLeftBarButtonWithImage:@"btn_close.png"
+                                command:[ForwardCommand buildCommandWithForward:
+                                         [Forward buildForwardWithType:ForwardTypeDismiss
+                                                                  from:self toController:nil]]];
+    } else {
+        self.navigationItem.leftBarButtonItem = nil;
+    }
     
     CGRect frame = self.view.bounds;
     
@@ -87,10 +93,28 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"kApartmentDidSelctNotification"
-                                                        object:[_dataSource objectAtIndex:indexPath.row]];
-    
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if ( self.hasLeftButton ) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"kApartmentDidSelctNotification"
+                                                            object:[_dataSource objectAtIndex:indexPath.row]];
+        
+        
+        Apartment* a = [_dataSource objectAtIndex:indexPath.row];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:a.name forKey:@"apartment.name"];
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+    } else {
+        Apartment* a = [_dataSource objectAtIndex:indexPath.row];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:a.name forKey:@"apartment.name"];
+        
+        ForwardCommand* aCommand = [ForwardCommand buildCommandWithForward:[Forward buildForwardWithType:ForwardTypePush
+                                                                                                    from:self
+                                                                                        toControllerName:@"HomeViewController"]];
+        aCommand.userData = [_dataSource objectAtIndex:indexPath.row];
+        [aCommand execute];
+    }
 }
 
 @end

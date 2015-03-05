@@ -10,4 +10,6 @@
 
 @interface ApartmentListViewController : BaseViewController
 
+@property (nonatomic, assign) BOOL hasLeftButton;
+
 @end

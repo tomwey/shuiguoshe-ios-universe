@@ -7,6 +7,7 @@
 //
 
 #import "SectionView.h"
+#import "Defines.h"
 
 @implementation SectionView
 {
@@ -26,8 +27,8 @@
         _sectionLabel = createLabel(CGRectMake(CGRectGetMaxY(_iconView.frame), ( CGRectGetHeight(self.bounds) - 37 ) / 2,
                                                200 - CGRectGetWidth(_iconView.frame), 37),
                                     NSTextAlignmentLeft,
-                                    [UIColor blackColor],
-                                    [UIFont boldSystemFontOfSize:18]);
+                                    COMMON_TEXT_COLOR,
+                                    [UIFont systemFontOfSize:16]);
         [self addSubview:_sectionLabel];
     }
     return self;

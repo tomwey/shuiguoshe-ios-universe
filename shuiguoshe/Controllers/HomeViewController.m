@@ -18,6 +18,7 @@
 @implementation HomeViewController
 {
     BannerView* _bannerView;
+    HomeTitleView* _titleView;
 }
 
 - (void)viewDidLoad {
@@ -29,17 +30,31 @@
     aCommand.forward.loginCheck = YES;
     [self setLeftBarButtonWithImage:@"btn_user.png" command:aCommand];
     
-    // 设置导航条标题视图
-    LogoTitleView* titleView = [[[LogoTitleView alloc] init] autorelease];
-    self.navigationItem.titleView = titleView;
+//    self.title = [[NSUserDefaults standardUserDefaults] objectForKey:@"apartment.name"];
     
-    PhoneNumberView* pnv = [PhoneNumberView currentPhoneNumberView];
-    titleView.didClickBlock = ^(BOOL closed) {
-        if ( closed ) {
-            [pnv dismiss];
-        } else {
-            [pnv showInView:self.view];
-        }
+    // 设置导航条标题视图
+//    LogoTitleView* titleView = [[[LogoTitleView alloc] init] autorelease];
+//    self.navigationItem.titleView = titleView;
+    
+//    PhoneNumberView* pnv = [PhoneNumberView currentPhoneNumberView];
+//    titleView.didClickBlock = ^(BOOL closed) {
+//        if ( closed ) {
+//            [pnv dismiss];
+//        } else {
+//            [pnv showInView:self.view];
+//        }
+//    };
+    
+    HomeTitleView* titleView = [[[HomeTitleView alloc] init] autorelease];
+    self.navigationItem.titleView = titleView;
+    _titleView = titleView;
+    
+    titleView.titleDidClickBlock = ^{
+        ForwardCommand* aCommand = [ForwardCommand buildCommandWithForward:[Forward buildForwardWithType:ForwardTypeModal
+                                                                         from:self
+                                                                 toControllerName:@"ApartmentListViewController"]];
+        aCommand.userData = @(YES);
+        [aCommand execute];
     };
     
     // 创建表视图
@@ -51,6 +66,8 @@
     [tableView release];
     
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+//    tableView.backgroundColor = [UIColor clearColor];
     
     tableView.dataSource = self;
     tableView.delegate   = self;
@@ -73,6 +90,8 @@
     [super viewWillAppear:animated];
     
     [_bannerView startLoop];
+    
+    _titleView.title = [[NSUserDefaults standardUserDefaults] objectForKey:@"apartment.name"];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -92,6 +111,8 @@
     if ( !cell ) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+//        cell.backgroundColor = [UIColor clearColor];
     }
     
     Section* s = [self.dataSource objectAtIndex:indexPath.row];
@@ -169,7 +190,7 @@
         [btn setTitle:cata.name forState:UIControlStateNormal];
         btn.backgroundColor = RGB(232,233,232);
         
-        [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btn setTitleColor:COMMON_TEXT_COLOR forState:UIControlStateNormal];
         
         int m = i % numberOfCol;
         int n = i / numberOfCol;

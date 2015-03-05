@@ -49,6 +49,8 @@
     
     tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
     
+//    tableView.backgroundColor = RGB(240, 241, 244);
+    
     [[DataService sharedService] loadEntityForClass:@"Item"
                                                 URI:[NSString stringWithFormat:@"/items/type-%ld", [self.userData cid]]
                                          completion:^(id result, BOOL succeed) {
@@ -78,6 +80,7 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:cellId] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        cell.backgroundColor = [UIColor clearColor];
     }
     
     [self addItemViewForCell:cell atIndex: indexPath.row];
@@ -97,8 +100,8 @@
         colCount = [_dataSource count] - row * _numberOfCols;
     }
     
-    CGFloat padding = 20;
-    CGFloat width = ( CGRectGetWidth(mainScreenBounds) - _numberOfCols * padding - padding / 2 ) / _numberOfCols;
+    CGFloat padding = 15;
+    CGFloat width = ( CGRectGetWidth(mainScreenBounds) - _numberOfCols * padding - padding + 5 ) / _numberOfCols;
     
     for (int i=0; i<colCount; i++) {
         NSInteger index = row * _numberOfCols + i;

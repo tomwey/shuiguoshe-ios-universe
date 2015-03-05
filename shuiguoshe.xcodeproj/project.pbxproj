@@ -15,6 +15,7 @@
 		973820FC1A884F2500B54EEC /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 973820FB1A884F2500B54EEC /* placeholder.png */; };
 		973820FF1A8890A600B54EEC /* Catalog.m in Sources */ = {isa = PBXBuildFile; fileRef = 973820FE1A8890A600B54EEC /* Catalog.m */; };
 		973821021A88971700B54EEC /* ItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 973821011A88971700B54EEC /* ItemView.m */; };
+		9740D9011AA82F2C00828B93 /* HomeTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9740D9001AA82F2C00828B93 /* HomeTitleView.m */; };
 		9747F9E71A8EDC78008099D4 /* LineItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9747F9E61A8EDC78008099D4 /* LineItem.m */; };
 		9747F9EA1A8EDEDA008099D4 /* CartService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9747F9E91A8EDEDA008099D4 /* CartService.m */; };
 		9747F9ED1A8EE49F008099D4 /* Checkbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 9747F9EC1A8EE49F008099D4 /* Checkbox.m */; };
@@ -212,6 +213,8 @@
 		973820FE1A8890A600B54EEC /* Catalog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Catalog.m; sourceTree = "<group>"; };
 		973821001A88971700B54EEC /* ItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemView.h; sourceTree = "<group>"; };
 		973821011A88971700B54EEC /* ItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemView.m; sourceTree = "<group>"; };
+		9740D8FF1AA82F2C00828B93 /* HomeTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTitleView.h; sourceTree = "<group>"; };
+		9740D9001AA82F2C00828B93 /* HomeTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTitleView.m; sourceTree = "<group>"; };
 		9747F9E51A8EDC78008099D4 /* LineItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineItem.h; sourceTree = "<group>"; };
 		9747F9E61A8EDC78008099D4 /* LineItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineItem.m; sourceTree = "<group>"; };
 		9747F9E81A8EDEDA008099D4 /* CartService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CartService.h; sourceTree = "<group>"; };
@@ -608,6 +611,8 @@
 				975201951A89EDCE0070FE1F /* LogoTitleView.m */,
 				9752019F1A89F5930070FE1F /* PhoneNumberView.h */,
 				975201A01A89F5930070FE1F /* PhoneNumberView.m */,
+				9740D8FF1AA82F2C00828B93 /* HomeTitleView.h */,
+				9740D9001AA82F2C00828B93 /* HomeTitleView.m */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -1162,6 +1167,7 @@
 				99C2747E1A4EE15300898741 /* CartViewController.m in Sources */,
 				99C274D71A4EEE1900898741 /* AFNetworkReachabilityManager.m in Sources */,
 				979ECA301AA6A7BE00E52B10 /* Share2WeiXinCommand.m in Sources */,
+				9740D9011AA82F2C00828B93 /* HomeTitleView.m in Sources */,
 				99C274881A4EE2CF00898741 /* BaseViewController.m in Sources */,
 				99928FEF1AA0BB52003EB739 /* DeliverInfoFormViewController.m in Sources */,
 				979D641A1AA160130010F78E /* UpdatePasswordViewController.m in Sources */,

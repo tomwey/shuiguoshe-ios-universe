@@ -7,11 +7,12 @@
 //
 
 #import "CoordinatorController.h"
+#import "ApartmentListViewController.h"
 
 @implementation CoordinatorController
 {
     UINavigationController* _navController;
-    HomeViewController*     _homeController;
+    UIViewController*       _homeController;
 }
 
 + (id)sharedInstance
@@ -34,9 +35,18 @@
             [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
         }
         
-        [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+        [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName : COMMON_TEXT_COLOR,
+                                                               NSFontAttributeName: [UIFont systemFontOfSize:18] }];
         
-        _homeController = [[[HomeViewController alloc] init] autorelease];
+        if ( [[NSUserDefaults standardUserDefaults] objectForKey:@"apartment.name"] != nil ) {
+            _homeController = [[[HomeViewController alloc] init] autorelease];
+        } else {
+            _homeController = [[[ApartmentListViewController alloc] init] autorelease];
+            ApartmentListViewController* alvc = (ApartmentListViewController *)_homeController;
+            
+            alvc.hasLeftButton = NO;
+        }
+        
         _navController = [[UINavigationController alloc] initWithRootViewController:_homeController];
     }
     return self;
@@ -101,7 +111,8 @@
         case ForwardTypeModal:
         {
             NSAssert(!!clz, @"需要设置toController");
-            UIViewController* to = [[[NSClassFromString(clz) alloc] init] autorelease];
+            BaseViewController* to = [[[NSClassFromString(clz) alloc] init] autorelease];
+            to.userData = aForward.userData;
             UINavigationController* nav = [[[UINavigationController alloc] initWithRootViewController:to] autorelease];
             [aForward.from presentViewController:nav animated:YES completion:nil];
         }

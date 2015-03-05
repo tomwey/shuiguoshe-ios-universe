@@ -20,14 +20,16 @@
 
 #define GREEN_COLOR RGB(7, 156, 22)
 
+#define COMMON_TEXT_COLOR RGB(56,56,56)
+
 // 家里
 //#define kAPIHost @"http://192.168.1.131:3000/api/v1"
 
 // 公司
-//#define kAPIHost @"http://10.0.16.11:3000/api/v1"
+#define kAPIHost @"http://10.0.16.11:3000/api/v1"
 
 // 产品
-#define kAPIHost @"http://shuiguoshe.com/api/v1"
+//#define kAPIHost @"http://shuiguoshe.com/api/v1"
 
 // 微信分享
 #define kWechatAppID @"wx4accd427c1693a84"
@@ -173,6 +175,7 @@ static inline UIWindow* AppWindow()
 #import "SectionView.h"
 #import "ItemView.h"
 #import "LogoTitleView.h"
+#import "HomeTitleView.h"
 #import "PhoneNumberView.h"
 #import "LPLabel.h"
 #import "CustomButton.h"
