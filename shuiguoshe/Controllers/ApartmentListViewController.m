@@ -9,7 +9,7 @@
 #import "ApartmentListViewController.h"
 #import "Defines.h"
 
-@interface ApartmentListViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface ApartmentListViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
 @end
 
@@ -17,12 +17,20 @@
 {
     NSMutableArray* _dataSource;
     UITableView*    _tableView;
+    NSMutableArray* _searchResults;
+    NSArray*        _currentDataSource;
+    
+    BOOL _seaching;
+    
+    NSMutableArray* _tempArray;
 }
 
 - (BOOL) shouldShowingCart { return NO; }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _seaching = NO;
     
     self.title = @"选择小区";
     
@@ -47,29 +55,82 @@
     _tableView.dataSource = self;
     _tableView.delegate = self;
     
+    _searchResults = [[NSMutableArray alloc] init];
+    
     _dataSource = [[NSMutableArray alloc] init];
+    
+    _tempArray = [[NSMutableArray alloc] init];
     
     [[DataService sharedService] loadEntityForClass:@"Apartment"
                                                 URI:@"/apartments"
                                          completion:^(id result, BOOL succeed)
      {
-         [_dataSource addObjectsFromArray:result];
+         for (int i=0; i<1000; i++) {
+             for (Apartment* a in result) {
+                 [_tempArray addObject:[NSString stringWithFormat:@"%d-%@-%@", a.oid, a.name, a.address]];
+             }
+             
+             [_dataSource addObjectsFromArray:result];
+         }
+         
+//         _prepareSearchString = [str copy];
+         _currentDataSource = _dataSource;
+         
          [_tableView reloadData];
      }];
     
     UIView* footer = [[[UIView alloc] init] autorelease];
     _tableView.tableFooterView = footer;
+    
+    UISearchBar* searchBar = [[[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(mainScreenBounds), 44)] autorelease];
+//    if ( [searchBar respondsToSelector:@selector(setBarTintColor:)] ) {
+//        searchBar.barTintColor = [UIColor whiteColor];
+//    }
+    searchBar.delegate = self;
+    
+    _tableView.tableHeaderView = searchBar;
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [_tableView.tableHeaderView resignFirstResponder];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if ( searchBar.text.length == 0 ) {
+        _currentDataSource = _dataSource;
+        [_tableView reloadData];
+    } else {
+        
+        [_searchResults removeAllObjects];
+        NSPredicate *pred = [NSPredicate predicateWithBlock:^BOOL(Apartment* evaluatedObject, NSDictionary *bindings) {
+            NSLog(@"%@",bindings);
+            if([evaluatedObject.name isEqualToString:searchBar.text])
+            {
+                return YES;
+            }
+            return NO;
+        }];
+        
+        NSArray* results = [_dataSource filteredArrayUsingPredicate:pred];
+        
+        [_searchResults addObjectsFromArray:results];
+        [_tableView reloadData];
+    }
 }
 
 - (void)dealloc
 {
     [_dataSource release];
+    [_searchResults release];
     [super dealloc];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_dataSource count];
+    
+    return [_currentDataSource count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -82,7 +143,7 @@
                                        reuseIdentifier:cellId] autorelease];
     }
     
-    Apartment* a = [_dataSource objectAtIndex:indexPath.row];
+    Apartment* a = [_currentDataSource objectAtIndex:indexPath.row];
     
     cell.textLabel.text = [NSString stringWithFormat:@"%@（%@）", a.name, a.address];
     
@@ -98,21 +159,21 @@
                                                             object:[_dataSource objectAtIndex:indexPath.row]];
         
         
-        Apartment* a = [_dataSource objectAtIndex:indexPath.row];
+        Apartment* a = [_currentDataSource objectAtIndex:indexPath.row];
         
         [[NSUserDefaults standardUserDefaults] setObject:a.name forKey:@"apartment.name"];
         
         [self dismissViewControllerAnimated:YES completion:nil];
         
     } else {
-        Apartment* a = [_dataSource objectAtIndex:indexPath.row];
+        Apartment* a = [_currentDataSource objectAtIndex:indexPath.row];
         
         [[NSUserDefaults standardUserDefaults] setObject:a.name forKey:@"apartment.name"];
         
         ForwardCommand* aCommand = [ForwardCommand buildCommandWithForward:[Forward buildForwardWithType:ForwardTypePush
                                                                                                     from:self
                                                                                         toControllerName:@"HomeViewController"]];
-        aCommand.userData = [_dataSource objectAtIndex:indexPath.row];
+        aCommand.userData = a;
         [aCommand execute];
     }
 }
